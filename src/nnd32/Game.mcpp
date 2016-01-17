@@ -1,0 +1,73 @@
+~import boost::format;
+~import LP3_LOG_DEBUG;
+~import nnd32::CharacterSprite;
+~import Lp3::Engine::Input::Controls;
+~import nnd32::Sound;
+~import nnd32::View;
+~import nnd32::World;
+
+
+~namespace nnd32;
+
+
+class Game
+{
+    Controls & controls;
+    View & view;
+    Sound & sound;
+    World & world;
+
+    public Game(Controls & controls, View & view, Sound & sound, World & world)
+    :   controls(controls),
+        view(view),
+        sound(sound),
+        world(world)
+    {
+    }
+
+    public void PlayGame() {
+        // TODO: FILL IN
+    }
+
+    private void destroyEverything(int how=0)
+    {
+        int j;
+        int penguin;
+        int goatorg;
+        if (world.Sprite[1].name == "Selecter") {
+            goto dogyup;
+        }
+        if (world.Sprite[0].name == "GameOverCloudBg") {
+            goto dogyup;
+        }
+
+        for (int j = 1; j < 15; ++ j) {
+            sound.PlayWave("nothing.wav");
+        }
+
+    dogyup:
+
+        sound.PlayIsoWave("nothing.wav");
+
+        if (how != 2) {
+            sound.PlayBgm("");
+        }
+
+        view.LoadTexture(-1, "plainblack.bmp", 25, 25);
+        //bgtexture = Nothing
+        //for (int j = 0; j < 9; ++ j) {
+            // Set AnimationTexture(j) = Nothing
+        //}
+        world.gotFocus = -1;
+        world.CameraX = 0;
+        world.CameraY = 0;
+        goatorg = 0;
+        penguin = world.spritesInUse;
+        //If how = 2 Then goatorg = 30: penguin = 95
+
+        for (int j = goatorg; j <= penguin; ++ j) {
+            world.Sprite[j] = CharacterSprite{};
+        }
+    }
+
+};

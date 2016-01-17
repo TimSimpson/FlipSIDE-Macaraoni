@@ -1,0 +1,70 @@
+~import boost::format;
+~import LP3_LOG_DEBUG;
+~import Lp3::Engine::Gfx::BitmapReader;
+~import Lp3::Engine::Gfx::Geometry::Box2d;
+~import Lp3::Engine::Gfx::GfxManager;
+~import Lp3::Engine::Gfx::Image;
+~import Lp3::Engine::Gfx::ImageMemory;
+~import Lp3::Engine::Resources::InputFileStream;
+~import Lp3::Engine::Gfx::InternalPixel;
+~import Lp3::Engine::Gfx::Pixel;
+~import Lp3::Engine::Resources::ReadStreamPtr;
+~import Lp3::Engine::Gfx::Renderer;
+~import Lp3::Engine::Gfx::Screen;
+~import Lp3::Engine::Gfx::ScreenObject;
+~import Lp3::Engine::Gfx::ScreenObjectPtr;
+~import std::string;
+~import Lp3::Engine::Gfx::Texture;
+~import Lp3::Engine::Gfx::TexturePtr;
+
+
+~namespace nnd32;
+
+class View
+{
+    GfxManager & manager;
+    Screen & screen;
+    ImageMemory & memory;
+    TexturePtr bgtexture;
+
+    ~block "h-predef" { #include <array> }
+    ~block "h" {
+        std::array<Lp3::Engine::Gfx::TexturePtr, 10> AnimationTexture;
+    }
+
+    public View(GfxManager & manager)
+    :   manager(manager),
+        screen(manager.GetScreen(0)),
+        memory(screen.GetImageMemory()),
+        bgtexture(),
+        AnimationTexture({})
+    {
+        LP3_LOG_DEBUG("Initialized view.");
+    }
+
+    public void DrawStuff() {
+        // TODO: FILL IN.
+    }
+
+    ~hidden TexturePtr loadImage(const string & fileName) {
+        Pixel colorKey[1];
+        colorKey[0].Blue = 0;
+        colorKey[0].Green = 0;
+        colorKey[0].Red = 0;
+        colorKey[0].Alpha = 0;
+
+        string path = str(format("FlipSIDE/%s") % fileName);
+        ReadStreamPtr input(new InputFileStream(path.c_str()));
+        return memory.LoadTexture(input, colorKey, 1);
+    }
+
+    public void LoadTexture(int which, const string & fileName, int howWide,
+                            int howHigh)
+    {
+        if (which == -1) {
+            bgtexture = loadImage(fileName);
+        } else {
+            AnimationTexture[which] = loadImage(fileName);
+        }
+    }
+};

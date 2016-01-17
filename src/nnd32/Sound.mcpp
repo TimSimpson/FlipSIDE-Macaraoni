@@ -1,0 +1,45 @@
+~import boost::format;
+~import LP3_LOG_DEBUG;
+~import std::string;
+
+
+~namespace nnd32;
+
+class Sound
+{
+    public void LoadSound(int which, const string & soundFile,
+                          string soundName = "")
+    {
+        LP3_LOG_DEBUG("LoadSound", soundFile);
+    }
+
+    public void PlayBgm(const string & soundFile)
+    {
+        LP3_LOG_DEBUG("PlayBgm %s", soundFile);
+    }
+
+    public void PlayIsoWave(const string & soundFile)
+    {
+        LP3_LOG_DEBUG("PlayIsoWave %s", soundFile);
+    }
+
+    public void PlaySound(const string & who)
+    {
+        LP3_LOG_DEBUG("PlaySound %s", who);
+    }
+
+    public void PlaySoundLoop(int which)
+    {
+        LP3_LOG_DEBUG("PlaySoundLoop %d", which);
+    }
+
+    public void PlayWave(const string & soundFile)
+    {
+        LP3_LOG_DEBUG("PlayWave %s", soundFile);
+    }
+
+    public void StopSound(int which)
+    {
+        LP3_LOG_DEBUG("StopSound %d", which);
+    }
+};

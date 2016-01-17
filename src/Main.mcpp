@@ -1,0 +1,124 @@
+~unit FlipSide type=exe;
+
+~import boost::format;
+~import LP3_LOG_DEBUG;
+~import Lp3::Engine::Time::Clock;
+~import Lp3::Engine::Input::Controls;
+~import nnd32::Game;
+~import Lp3::Engine::Gfx::GfxManager;
+~import nnd32::Sound;
+~import std::string;
+~import nnd32::View;
+~import nnd32::World;
+~import std::vector;
+
+~block "cpp" :=
+
+#define LP3_MICROMAIN_NAME "FlipSIDE"
+#define LP3_MICROMAIN_WITH_GFX_DEPS true
+#include <Lp3/Engine/MicroMain.h>
+
+
+struct Run{
+
+    template<typename Func>
+    Run(Func f) {
+        f();
+    }
+
+};
+
+class Main
+{
+private:
+
+    Run r1;
+    GfxManager manager;
+    Run r2;
+    Controls controls;
+    Run r3;
+    Sound sound;
+    Run r4;
+    World world;
+    Run r5;
+    View view;
+    Run r6;
+    Game game;
+
+
+public:
+    Main(const vector<string> & arguments
+         LP3_COMPILE_TARGET_WINDOWS_THEN(, HINSTANCE hInstance, HWND hWnd))
+    :   r1([](){ LP3_LOG_DEBUG("Initializing GFX manager."); }),
+        manager(LP3_COMPILE_TARGET_WINDOWS_THEN(hWnd)),
+        r2([](){ LP3_LOG_DEBUG("Initializing controls."); }),
+        controls(
+            #ifdef COMPILE_TARGET_WINDOWS
+                hInstance, hWnd
+            #endif
+        ),
+        r3([](){ LP3_LOG_DEBUG("Initializing sound system."); }),
+        sound(),
+        r4([](){ LP3_LOG_DEBUG("Creating world."); }),
+        world(),
+        r5([](){ LP3_LOG_DEBUG("Creating viewer."); }),
+        view(manager),
+        r6([](){ LP3_LOG_DEBUG("Creating game object."); }),
+        game(controls, view, sound, world)
+    {
+        LP3_LOG_DEBUG("Starting Clock...");
+        Clock::Init(1000.0f / 30.0f);
+    }
+
+    ~Main()
+    {
+        LP3_LOG_DEBUG("Shutting down, good-bye.");
+    }
+
+    void Iterate()
+    {
+        // MainLoop
+
+        if (world.STOPGAME)
+        {
+            // Stop the game, somehow? Maybe post a quit message to Windows.
+        }
+        // Update the world's perception of time.
+        Clock::NextFrame();
+        world.sFactor == Clock::GetSpeedMod();
+        if (world.LemonTime) {
+            world.sFactor *= 2;
+        }
+        world.clock = world.clock + ((1 / 120) * world.sFactor);
+
+        controls.Update();
+        game.PlayGame();
+        view.DrawStuff();
+    }
+
+    LP3_COMPILE_TARGET_WINDOWS_THEN(
+        void WindowsMessage(HWND hWnd, UINT message, WPARAM wParam,
+                            LPARAM lParam)
+        {
+            switch(message){
+                case WM_SIZE:
+                    manager.Resize({ LOWORD(lParam), HIWORD(lParam) });
+                    break;
+                case WM_SETFOCUS:
+                {
+                    /*if (0 != manager)
+                    {
+                        LP3_LOG_DEBUG("Reacquiring input. Calling "
+                                      "SwitchWindow.");
+                        manager.SwitchWindow(hWnd);
+                    }*/
+                } break;
+                default:
+                    break;
+            }
+        }
+    );
+};
+
+
+LP3_MICROMAIN(Main, "FlipSIDE");
