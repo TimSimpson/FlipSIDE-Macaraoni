@@ -1,4 +1,8 @@
+~import Lp3::Engine::Gfx::Pixel;
+
+
 ~namespace nnd32;
+
 
 struct Vertex
 {
@@ -6,7 +10,7 @@ struct Vertex
     float y;
     float z;
     float rhw;
-    long color;
+    Pixel color;
     long specular;
     float tu;
     float tv;
@@ -16,7 +20,7 @@ struct Vertex
         y(0),
         z(0),
         rhw(0),
-        color(0),
+        color(0, 0, 0, 255),
         specular(0),
         tu(0),
         tv(0)

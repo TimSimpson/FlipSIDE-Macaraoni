@@ -16,34 +16,155 @@
 ~import std::string;
 ~import Lp3::Engine::Gfx::Texture;
 ~import Lp3::Engine::Gfx::TexturePtr;
-
+~import Lp3::Engine::Gfx::Geometry::TexturedQuadSrc;
+~import nnd32::Vertex;
+~import nnd32::World;
 
 ~namespace nnd32;
 
-class View
+class View : public ScreenObject
 {
-    GfxManager & manager;
-    Screen & screen;
-    ImageMemory & memory;
-    TexturePtr bgtexture;
+    private GfxManager & manager;
+    private Screen & screen;
+    private ImageMemory & memory;
+    private TexturePtr bgtexture;
 
-    ~block "h-predef" { #include <array> }
+    ~block "h-predef" {
+        #include <array>
+        #include "Vertex.h"
+    }
     ~block "h" {
         std::array<Lp3::Engine::Gfx::TexturePtr, 10> AnimationTexture;
     }
 
-    public View(GfxManager & manager)
+    private World & world;
+    ~block "h" {
+    private:
+        std::array<int, 10> _texWidth;
+        std::array<int, 10> _texHeight;
+        std::array<Vertex, 4> bgverts;
+    }
+
+    private int bgWidth;
+    private int bgHeight;
+
+    ~block "cpp" { namespace {
+        const Pixel normColor(255, 255, 255, 255);
+    } }
+
+    public View(GfxManager & manager, World & world)
     :   manager(manager),
         screen(manager.GetScreen(0)),
         memory(screen.GetImageMemory()),
         bgtexture(),
-        AnimationTexture({})
+        AnimationTexture({}),
+        world(world),
+        _texWidth({}),
+        _texHeight({}),
+        bgverts({}),
+        bgWidth(0),
+        bgHeight(0)
     {
         LP3_LOG_DEBUG("Initialized view.");
+        screen.SetObject(this);
+    }
+
+    public virtual void DrawOpaque(Renderer & renderer)
+    {
+        // Nadda?
+    }
+
+    public virtual void DrawTranslucent(Renderer & renderer)
+    {
+        // Adapted from "DrawStuff" method.
+        if (bgtexture) {
+            LP3_ASSERT_FALSE(!bgtexture);
+            renderer.UseTexture(bgtexture);
+            drawVertsAsQuad(renderer, bgverts.data(), -1);
+        }
+        int currentTexture = -1;
+        for (int j = 0; j < world.spritesInUse; ++ j) {
+            if (world.drawOrder[j] == -1) {
+                continue;   // goto suckIt
+            }
+            const int index = world.drawOrder[j];
+            const auto & sprite = world.Sprite[index];
+
+
+            if (sprite.visible) {
+                if (sprite.texture != currentTexture) {
+                    renderer.UseTexture(this->AnimationTexture[sprite.texture]);
+                    currentTexture = sprite.texture;
+                }
+                // Shouldn't it not be in draw order otherwise? Oh well...
+                drawVertsAsQuad(renderer, sprite.SpriteVerts.data(),
+                                sprite.texture);
+            }
+        }
+        // If ((GetTickCount / 1000) > cranBerry) Then cranBerry = ((GetTickCount / 1000) + 1): frRate = frRate2: frRate2 = 0
+        //If debugOn = True Then Form1.PSet (1, 1): Form1.Print "FPS:" + Str$(frRate): Form1.Print "GPS:" + Str$(gpRate)
     }
 
     public void DrawStuff() {
-        // TODO: FILL IN.
+        manager.Render();  // This will call the two draw methods above.
+    }
+
+    ~hidden void drawVertsAsQuad(Renderer & renderer, const Vertex * v,
+                                 const int texIndex)
+    {
+        // I can't remember what order the old verts had to be rendered in.
+        // I'm creating these variables so changing the order will be easier.
+        const auto & bl = v[0];
+        const auto & tl = v[1];
+        const auto & br = v[2];
+        const auto & tr = v[3];
+
+        const int textureWidth = this->texWidth(texIndex);
+        const int textureHeight = this->texHeight(texIndex);
+
+        // This is a pain in the ass... the old game would calculate the
+        // floating point values of tu, tv, but the new engine does that
+        // for us... which means we have to UNDO those calculations.
+        TexturedQuadSrc src = {
+            { tl.tu * textureWidth, tl.tv * textureHeight },
+            { br.tu * textureWidth, br.tv * textureHeight }
+        };
+
+        // Arrays of vertices were used to represent two triangles, but
+        // really I always used them for quads. So certain things can be
+        // assumed here about what data is actually useful.
+        renderer.TexturedQuad(
+            {{tl.x, tl.y}, {br.x, br.y}},
+            tl.z, // Could probably be any vertex in the array.
+            src);
+
+    }
+
+    public void ForceShowBackground() {
+        // This was originally a block of code in the "NowLoading" function.
+        // It appears it would force the background to display, pre-empting
+        // the loop, so that while busy work took place at least the loading
+        // screen would be visible.
+        /*if (Form1.WindowState != vbMinimized) {
+
+            //cranBerry = Timer
+
+            With dev
+                Call .Clear(0, ByVal 0&, D3DCLEAR_TARGET, &HFF, 0, 0)
+
+                Call .BeginScene
+
+
+
+                'Call .CopyRects(bgSurface, 1, 1, .GetBackBuffer(0, D3DBACKBUFFER_TYPE_MONO), 1)
+
+
+                Call .SetTexture(0, bgtexture)
+                 Call .DrawPrimitiveUP(D3DPT_TRIANGLESTRIP, 2, bgverts(0), Len(bgverts(0)))
+                .EndScene
+                Call .Present(ByVal 0&, ByVal 0&, 0, ByVal 0&)
+            End With
+        }*/
     }
 
     ~hidden TexturePtr loadImage(const string & fileName) {
@@ -63,8 +184,189 @@ class View
     {
         if (which == -1) {
             bgtexture = loadImage(fileName);
+            this->bgWidth = howWide;
+            this->bgHeight = howHigh;
         } else {
             AnimationTexture[which] = loadImage(fileName);
+            this->_texWidth[which] = howHigh;
+            this->_texHeight[which] = howHigh;
         }
+    }
+
+    public Pixel QBColor(int index) {
+        // If the code picks wrong, they get translucent yellow.
+        switch(index) {
+            case 0:
+                return Pixel(0, 0, 0, 255);
+            case 1:
+                return Pixel(0, 0, 128, 255);
+            case 2:
+                return Pixel(0, 128, 0, 255);
+            case 3:
+                return Pixel(128, 255, 128, 255);
+            case 4:
+                return Pixel(128, 0, 0, 255);
+            case 5:
+                return Pixel(128, 0, 128, 255);
+            case 6:
+                return Pixel(128, 128, 0, 255);
+            case 7:
+                return Pixel(192, 192, 192, 255);
+            case 8:
+                return Pixel(64, 64, 64, 255);
+            case 9:
+                return Pixel(0, 0, 255, 255);
+            case 10:
+                return Pixel(0, 255, 0, 255);
+            case 11:
+                return Pixel(128, 128, 255, 255);
+            case 12:
+                return Pixel(255, 0, 0, 255);
+            case 13:
+                return Pixel(255, 0, 255, 255);
+            case 14:
+                return Pixel(255, 255, 0, 255);
+            case 15:
+                return Pixel(255, 255, 255, 255);
+            default:
+                return Pixel(255, 255, 0, 128);
+        }
+    }
+
+    // This used to be just an array. The problem is in the old code
+    // bgWidth is a different value, which leads to one off duplications
+    // EVERYWHERE. So here passing -1 will return bgWidth.
+    ~hidden int texWidth(int index) {
+        if (index < 0) {
+            return this->bgWidth;
+        }
+        return this->_texWidth[index];
+    }
+
+    // Ditto
+    ~hidden int texHeight(int index) {
+        if (index < 0) {
+            return this->bgHeight;
+        }
+        return this->_texHeight[index];
+    }
+
+    public void UpdateSprites() {
+        //int j = 0; // in old code, not needed?
+        int k = 0;
+        double texorg = 0.0;
+        int davidorg1 = 0;
+        int davidOrg2 = 0;
+
+        for (int j = 0; j < world.spritesInUse; ++ j) {
+            auto & s = world.Sprite[j];
+            if (s.frame > 0) {
+                s.srcx = s.Aframe[s.frame].x;
+                s.srcy = s.Aframe[s.frame].y;
+                s.srcx2 = s.Aframe[s.frame].x2;
+                s.srcy2 = s.Aframe[s.frame].y2;
+            }
+        }
+
+        //----------------------------------------------------------------------
+        //              THIS PART HERE'S THE KICKER
+        //----------------------------------------------------------------------
+
+        {
+            auto & v = this->bgverts[0];
+            v.x = 0; v.y = 480; // RealHeight
+            v.tu = world.CameraX / world.bgWidth;
+            v.tv = (world.CameraY + world.CameraHeight) / world.bgHeight;
+            v.rhw = 1;
+            v.color = normColor;
+        }
+
+        {
+            auto & v = this->bgverts[1];
+            v.x = 0; v.y = 0;
+            v.tu = world.CameraX / bgWidth; v.tv = world.CameraY / bgHeight;
+            v.rhw = 1;
+            v.color = normColor;
+        }
+
+        {
+            auto & v = this->bgverts[2];
+            v.x = 640; v.y = 480; // RealWidth; v.y = RealHeight
+            v.tu = (world.CameraX + world.CameraWidth) / bgWidth;
+            v.tv = (world.CameraY + world.CameraHeight) / bgHeight;
+            v.rhw = 1;
+            v.color = normColor;
+        }
+
+        {
+            auto & v = this->bgverts[3];
+            v.x = 640; v.y = 0;
+            v.tu = (world.CameraX + world.CameraWidth) / bgWidth; v.tv = world.CameraY / bgHeight;
+            v.rhw = 1;
+            v.color = normColor;
+        }
+
+        for (int j = 0; j < world.spritesInUse; ++ j) {
+            auto & sprite = world.Sprite[j];
+
+            if (sprite.reverse = true) {
+                k = sprite.srcx2;
+                sprite.srcx2 = sprite.srcx;
+                sprite.srcx = k;
+            }
+
+            {
+                auto & v = sprite.SpriteVerts[0];
+                v.x = sprite.x - world.CameraX;
+                v.y = sprite.y + sprite.high - (sprite.z) - world.CameraY;
+                if (sprite.srcx != 0) {
+                    v.tu = sprite.srcx / this->texWidth(sprite.texture);
+                }
+                if (sprite.srcy2 != 0) {
+                    v.tv = sprite.srcy2 / this->texHeight(sprite.texture);
+                }
+                v.color = sprite.color;
+            }
+            {
+                auto & v = sprite.SpriteVerts[1];
+                v.x = sprite.x - world.CameraX;
+                v.y = sprite.y - (sprite.z) - world.CameraY;
+                if (sprite.srcx != 0) {
+                    v.tu = sprite.srcx / this->texWidth(sprite.texture);
+                }
+                if (sprite.srcy != 0) {
+                    v.tv = sprite.srcy / this->texHeight(sprite.texture);
+                }
+                // v.rhw = 1
+                v.color = sprite.color;
+            }
+            {
+                auto & v = sprite.SpriteVerts[2];
+                v.x = sprite.x + sprite.wide - world.CameraX;
+                v.y = sprite.y + sprite.high - (sprite.z) - world.CameraY;
+                if (sprite.srcx2 != 0) {
+                    v.tu = sprite.srcx2 / this->texWidth(sprite.texture);
+                }
+                if (sprite.srcy2 != 0) {
+                    v.tv = sprite.srcy2 / this->texHeight(sprite.texture);
+                }
+                // v.rhw = 1
+                v.color = sprite.color;
+            }
+            {
+                auto & v = sprite.SpriteVerts[3];
+                v.x = sprite.x + sprite.wide - world.CameraX;
+                v.y = sprite.y - (sprite.z) - world.CameraY;
+                if (sprite.srcx2 != 0) {
+                    v.tu = sprite.srcx2 / this->texWidth(sprite.texture);
+                }
+                if (sprite.srcy != 0) {
+                    v.tv = sprite.srcy / this->texHeight(sprite.texture);
+                }
+                // v.rhw = 1
+                v.color = sprite.color;
+            }
+        }  // end for loop
+
     }
 };

@@ -62,7 +62,7 @@ public:
         r4([](){ LP3_LOG_DEBUG("Creating world."); }),
         world(),
         r5([](){ LP3_LOG_DEBUG("Creating viewer."); }),
-        view(manager),
+        view(manager, world),
         r6([](){ LP3_LOG_DEBUG("Creating game object."); }),
         game(controls, view, sound, world)
     {

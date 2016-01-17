@@ -9,13 +9,16 @@ struct World
 {
     ~block "h-predef" {
         #include <array>
-        #include <nnd32/CharacterSprite.h>
+        #include "CharacterSprite.h"
+        #include "CinemaType.h"
     }
     ~block "h" {
-    const int FULLSCREENWIDTH = 640;
-    const int FULLSCREENHEIGHT = 480;
 
-    enum Cpp98Hack { NUMSPRITES = 150 };
+    enum Cpp98Hack {
+        FULLSCREENWIDTH = 640,
+        FULLSCREENHEIGHT = 480,
+        NUMSPRITES = 150
+    };
 
     double Gravity;
     double clock;
@@ -41,6 +44,11 @@ struct World
     int cameraStopX;  //this is where the cameraHALTS!
     int cameraStopY; //this is where the cameraHALTS! for y
     int gotFocus;
+
+    std::array<CinemaType, 40> cinema; // Dialogue!
+    int cinemaCounter;
+    int cinemaMax; //how many lines of dialogue per cinema
+    std::string exitS;
 
     std::array<CharacterSprite, NUMSPRITES> Sprite;
 
@@ -120,6 +128,10 @@ struct World
         cameraStopX(0),
         cameraStopY(0),
         gotFocus(0),
+        cinema({}),
+        cinemaCounter(0),
+        cinemaMax(0),
+        exitS(),
         Sprite(),
         bgWidth(0),
         bgHeight(0),
