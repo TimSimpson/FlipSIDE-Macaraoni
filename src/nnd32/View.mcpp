@@ -112,8 +112,8 @@ class View : public ScreenObject
     ~hidden void drawVertsAsQuad(Renderer & renderer, const Vertex * v,
                                  const int texIndex)
     {
-        // I can't remember what order the old verts had to be rendered in.
-        // I'm creating these variables so changing the order will be easier.
+        // The verts in the old engine where rendered like an N starting from
+        // the bottom left corner.
         const auto & bl = v[0];
         const auto & tl = v[1];
         const auto & br = v[2];

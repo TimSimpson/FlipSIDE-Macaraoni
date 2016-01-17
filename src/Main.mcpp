@@ -44,7 +44,8 @@ private:
     View view;
     Run r6;
     Game game;
-
+    double currentTimerTime;
+    double nextTimerCallTime;
 
 public:
     Main(const vector<string> & arguments
@@ -64,7 +65,9 @@ public:
         r5([](){ LP3_LOG_DEBUG("Creating viewer."); }),
         view(manager, world),
         r6([](){ LP3_LOG_DEBUG("Creating game object."); }),
-        game(controls, view, sound, world)
+        game(controls, view, sound, world),
+        currentTimerTime(0),
+        nextTimerCallTime(1.0/5.0)
     {
         LP3_LOG_DEBUG("Starting Clock...");
         Clock::Init(1000.0f / 30.0f);
@@ -85,14 +88,40 @@ public:
         }
         // Update the world's perception of time.
         Clock::NextFrame();
-        world.sFactor == Clock::GetSpeedMod();
+
+        // This is tricky because I have to understand how the old game
+        // perceived things.
+        // Old code:
+        //      sFactor = tRate / frRate ;
+        //      clock = clock + ((1/120) * sFactor)
+
+        // I am presuming clock intended to be updated 120 times a second under
+        // optimal unless there was slow down. So:
+        world.clock = world.clock + (120.0 * Clock::GetSpeedMod());
+        // I am also presumming that sFactor was 2, based on the code:
+        world.sFactor = Clock::GetSpeedMod() * 2.0;
         if (world.LemonTime) {
             world.sFactor *= 2;
         }
-        world.clock = world.clock + ((1 / 120) * world.sFactor);
+
+
+        // This is kind of goofy. In the VB version "timedEvents" got called
+        // by a real timer, b/c I couldn't make the animation look right
+        // otherwise. But, that may have been due to me using the GetTickCount
+        // method, which the Clock class of Lp3 refers to as "Crappy Timer."
+        // :) So using the world clock here to call the "timed" events actually
+        // makes more sense.
+        currentTimerTime += Clock::GetSpeedMod();
+        LP3_LOG_DEBUG("currentTimerTime %f", currentTimerTime);
+        LP3_LOG_DEBUG("nextTimerCallTime %f", nextTimerCallTime);
+        while (currentTimerTime > nextTimerCallTime) {
+            currentTimerTime -= nextTimerCallTime;
+            game.TimedEvents();
+        }
 
         controls.Update();
         game.PlayGame();
+
         view.DrawStuff();
     }
 
@@ -113,6 +142,12 @@ public:
                         manager.SwitchWindow(hWnd);
                     }*/
                 } break;
+                case WM_KEYDOWN:
+                    game.OnKey((char)wParam);
+                    break;
+                case WM_KEYUP:
+                    game.OffKey((char)wParam);
+                    break;
                 default:
                     break;
             }
