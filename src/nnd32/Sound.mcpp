@@ -23,9 +23,11 @@ class Sound
         LP3_LOG_DEBUG("PlayIsoWave %s", soundFile);
     }
 
-    public void PlaySound(const string & who)
+    // Renamed with underscore to avoid ridiculous Windows header macro
+    // issue.
+    public void PlaySound_(const string & soundFile)
     {
-        LP3_LOG_DEBUG("PlaySound %s", who);
+        LP3_LOG_DEBUG("PlaySound %s", soundFile);
     }
 
     public void PlaySoundLoop(int which)
