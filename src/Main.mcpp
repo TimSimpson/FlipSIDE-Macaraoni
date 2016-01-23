@@ -8,6 +8,7 @@
 ~import Lp3::Engine::Gfx::GfxManager;
 ~import nnd32::Sound;
 ~import std::string;
+~import nnd32::Vb;
 ~import nnd32::View;
 ~import nnd32::World;
 ~import std::vector;
@@ -43,6 +44,7 @@ private:
     Run r5;
     View view;
     Run r6;
+    Vb vb;
     Game game;
     double currentTimerTime;
     double nextTimerCallTime;
@@ -65,7 +67,8 @@ public:
         r5([](){ LP3_LOG_DEBUG("Creating viewer."); }),
         view(manager, world),
         r6([](){ LP3_LOG_DEBUG("Creating game object."); }),
-        game(controls, view, sound, world),
+        vb(),
+        game(controls, view, sound, vb, world),
         currentTimerTime(0),
         nextTimerCallTime(1.0/5.0)
     {

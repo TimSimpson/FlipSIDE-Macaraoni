@@ -1,2 +1,6 @@
 class boost_algorithm_string_predicate { ~hfile=<boost/algorithm/string/predicate.hpp> };
 class boost_lexical_cast { ~hfile=<boost/lexical_cast.hpp> };
+
+class std::mt19937 { ~hfile=<random> };
+class std::random_device { ~hfile=<random> };
+class std::uniform_real_distribution { ~hfile=<random> };

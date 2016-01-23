@@ -1,0 +1,26 @@
+~import std::mt19937;
+~import std::random_device;
+~import std::uniform_real_distribution;
+
+
+~namespace nnd32;
+
+
+// Helper class which simulates old Visual Basic functions.
+class Vb
+{
+    private random_device rnd_dev;
+    private mt19937 rnd_gen;
+    private uniform_real_distribution<double> rnd_distribution;
+
+    public Vb()
+    :   rnd_dev(),
+        rnd_gen(rnd_dev()),
+        rnd_distribution(0.0, 1.0)
+    {
+    }
+
+    public double Rnd() {
+        return rnd_distribution(rnd_gen);
+    }
+};
