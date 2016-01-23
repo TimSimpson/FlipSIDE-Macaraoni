@@ -193,8 +193,14 @@ class View : public ScreenObject
         }
     }
 
-    public Pixel QBColor(int index) {
-        // If the code picks wrong, they get translucent yellow.
+    public Pixel Rgb(int r, int g, int b) const {
+        // Emulates old VB RGB function. Named 'Rgb' due to probable windows.h
+        // issues. >:(
+        return Pixel(r, g, b, 255);
+    }
+
+    public Pixel QBColor(int index) const {
+        // Emulates QBColor function.
         switch(index) {
             case 0:
                 return Pixel(0, 0, 0, 255);
@@ -229,7 +235,7 @@ class View : public ScreenObject
             case 15:
                 return Pixel(255, 255, 255, 255);
             default:
-                return Pixel(255, 255, 0, 128);
+                LP3_ASSERT_FALSE(true, "Bad color selection.");
         }
     }
 
