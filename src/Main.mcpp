@@ -117,7 +117,16 @@ public:
         currentTimerTime += Clock::GetSpeedMod();
         //LP3_LOG_DEBUG("currentTimerTime %f", currentTimerTime);
         //LP3_LOG_DEBUG("nextTimerCallTime %f", nextTimerCallTime);
-        LP3_LOG_DEBUG("world.Clock = %f", world.clock);
+        LP3_LOG_SET("world.Clock", world.clock);
+
+        LP3_LOG_SET("world.Sprite[0].SpriteVerts[1].tu", world.Sprite[0].SpriteVerts[1].tu);
+        LP3_LOG_SET("world.Sprite[0].SpriteVerts[1].tv", world.Sprite[0].SpriteVerts[1].tv);
+
+        LP3_LOG_SET("world.Sprite[0].srcx", world.Sprite[0].srcx);
+        LP3_LOG_SET("world.Sprite[0].srcy", world.Sprite[0].srcy);
+
+        LP3_LOG_SET("world.Sprite[0].frame", world.Sprite[0].frame);
+        LP3_LOG_SET("world.Sprite[0].reverse", world.Sprite[0].reverse);
 
         while (currentTimerTime > nextTimerCallTime) {
             currentTimerTime -= nextTimerCallTime;

@@ -317,7 +317,7 @@ class View : public ScreenObject
         for (int j = 0; j < world.spritesInUse; ++ j) {
             auto & sprite = world.Sprite[j];
 
-            if (sprite.reverse = true) {
+            if (sprite.reverse == true) {
                 k = sprite.srcx2;
                 sprite.srcx2 = sprite.srcx;
                 sprite.srcx = k;

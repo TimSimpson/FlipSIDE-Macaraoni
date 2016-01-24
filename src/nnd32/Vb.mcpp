@@ -1,5 +1,11 @@
+~import Lp3::Engine::Resources::EnvVars;
+~import LP3_FAIL;
+~import boost::format;
+~import std::fstream;
+~import LP3_LOG_DEBUG;
 ~import std::mt19937;
 ~import std::random_device;
+~import std::string;
 ~import std::uniform_real_distribution;
 
 
@@ -18,6 +24,20 @@ class Vb
         rnd_gen(rnd_dev()),
         rnd_distribution(0.0, 1.0)
     {
+    }
+
+    public fstream OpenForInput(const string & filePath)
+    {
+        fstream file;
+        string fullPath = str(format("%s/FlipSIDE/%s") % EnvVars::Get("LP3_ROOT_PATH")
+                                     % filePath);
+        LP3_LOG_DEBUG("Opening file %s...", fullPath);
+        file.open(fullPath.c_str(), std::ios::in | std::ios::binary);
+        if (file.bad() || file.fail())
+        {
+            LP3_FAIL("Error opening file %s!", fullPath);
+        }
+        return file;
     }
 
     public double Rnd() {
