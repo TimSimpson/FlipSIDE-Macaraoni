@@ -100,13 +100,13 @@ public:
 
         // I am presuming clock intended to be updated 120 times a second under
         // optimal unless there was slow down. So:
-        world.clock = world.clock + (120.0 * Clock::GetSpeedMod());
+        //world.clock = world.clock + (120.0 * Clock::GetSpeedMod());
+        world.clock = world.clock + Clock::GetSpeedMod();
         // I am also presumming that sFactor was 2, based on the code:
         world.sFactor = Clock::GetSpeedMod() * 2.0;
         if (world.LemonTime) {
             world.sFactor *= 2;
         }
-
 
         // This is kind of goofy. In the VB version "timedEvents" got called
         // by a real timer, b/c I couldn't make the animation look right
@@ -115,8 +115,10 @@ public:
         // :) So using the world clock here to call the "timed" events actually
         // makes more sense.
         currentTimerTime += Clock::GetSpeedMod();
-        LP3_LOG_DEBUG("currentTimerTime %f", currentTimerTime);
-        LP3_LOG_DEBUG("nextTimerCallTime %f", nextTimerCallTime);
+        //LP3_LOG_DEBUG("currentTimerTime %f", currentTimerTime);
+        //LP3_LOG_DEBUG("nextTimerCallTime %f", nextTimerCallTime);
+        LP3_LOG_DEBUG("world.Clock = %f", world.clock);
+
         while (currentTimerTime > nextTimerCallTime) {
             currentTimerTime -= nextTimerCallTime;
             game.TimedEvents();

@@ -281,8 +281,8 @@ class View : public ScreenObject
         {
             auto & v = this->bgverts[0];
             v.x = 0; v.y = 480; // RealHeight
-            v.tu = world.CameraX / world.bgWidth;
-            v.tv = (world.CameraY + world.CameraHeight) / world.bgHeight;
+            v.tu = (float) world.CameraX / bgWidth;
+            v.tv = (float) (world.CameraY + world.CameraHeight) / bgHeight;
             v.rhw = 1;
             v.color = normColor;
         }
@@ -290,7 +290,8 @@ class View : public ScreenObject
         {
             auto & v = this->bgverts[1];
             v.x = 0; v.y = 0;
-            v.tu = world.CameraX / bgWidth; v.tv = world.CameraY / bgHeight;
+            v.tu = (float) world.CameraX / bgWidth;
+            v.tv = (float) world.CameraY / bgHeight;
             v.rhw = 1;
             v.color = normColor;
         }
@@ -298,8 +299,8 @@ class View : public ScreenObject
         {
             auto & v = this->bgverts[2];
             v.x = 640; v.y = 480; // RealWidth; v.y = RealHeight
-            v.tu = (world.CameraX + world.CameraWidth) / bgWidth;
-            v.tv = (world.CameraY + world.CameraHeight) / bgHeight;
+            v.tu = (float) (world.CameraX + world.CameraWidth) / bgWidth;
+            v.tv = (float) (world.CameraY + world.CameraHeight) / bgHeight;
             v.rhw = 1;
             v.color = normColor;
         }
@@ -307,7 +308,8 @@ class View : public ScreenObject
         {
             auto & v = this->bgverts[3];
             v.x = 640; v.y = 0;
-            v.tu = (world.CameraX + world.CameraWidth) / bgWidth; v.tv = world.CameraY / bgHeight;
+            v.tu = (float) (world.CameraX + world.CameraWidth) / bgWidth;
+            v.tv = (float) world.CameraY / bgHeight;
             v.rhw = 1;
             v.color = normColor;
         }
@@ -326,10 +328,10 @@ class View : public ScreenObject
                 v.x = sprite.x - world.CameraX;
                 v.y = sprite.y + sprite.high - (sprite.z) - world.CameraY;
                 if (sprite.srcx != 0) {
-                    v.tu = sprite.srcx / this->texWidth(sprite.texture);
+                    v.tu = (float) sprite.srcx / this->texWidth(sprite.texture);
                 }
                 if (sprite.srcy2 != 0) {
-                    v.tv = sprite.srcy2 / this->texHeight(sprite.texture);
+                    v.tv = (float) sprite.srcy2 / this->texHeight(sprite.texture);
                 }
                 v.color = sprite.color;
             }
@@ -338,10 +340,10 @@ class View : public ScreenObject
                 v.x = sprite.x - world.CameraX;
                 v.y = sprite.y - (sprite.z) - world.CameraY;
                 if (sprite.srcx != 0) {
-                    v.tu = sprite.srcx / this->texWidth(sprite.texture);
+                    v.tu = (float) sprite.srcx / this->texWidth(sprite.texture);
                 }
                 if (sprite.srcy != 0) {
-                    v.tv = sprite.srcy / this->texHeight(sprite.texture);
+                    v.tv = (float) sprite.srcy / this->texHeight(sprite.texture);
                 }
                 // v.rhw = 1
                 v.color = sprite.color;
@@ -351,10 +353,10 @@ class View : public ScreenObject
                 v.x = sprite.x + sprite.wide - world.CameraX;
                 v.y = sprite.y + sprite.high - (sprite.z) - world.CameraY;
                 if (sprite.srcx2 != 0) {
-                    v.tu = sprite.srcx2 / this->texWidth(sprite.texture);
+                    v.tu = (float) sprite.srcx2 / this->texWidth(sprite.texture);
                 }
                 if (sprite.srcy2 != 0) {
-                    v.tv = sprite.srcy2 / this->texHeight(sprite.texture);
+                    v.tv = (float) sprite.srcy2 / this->texHeight(sprite.texture);
                 }
                 // v.rhw = 1
                 v.color = sprite.color;
@@ -364,10 +366,10 @@ class View : public ScreenObject
                 v.x = sprite.x + sprite.wide - world.CameraX;
                 v.y = sprite.y - (sprite.z) - world.CameraY;
                 if (sprite.srcx2 != 0) {
-                    v.tu = sprite.srcx2 / this->texWidth(sprite.texture);
+                    v.tu = (float) sprite.srcx2 / this->texWidth(sprite.texture);
                 }
                 if (sprite.srcy != 0) {
-                    v.tv = sprite.srcy / this->texHeight(sprite.texture);
+                    v.tv = (float) sprite.srcy / this->texHeight(sprite.texture);
                 }
                 // v.rhw = 1
                 v.color = sprite.color;

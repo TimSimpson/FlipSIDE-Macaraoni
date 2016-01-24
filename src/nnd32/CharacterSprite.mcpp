@@ -15,6 +15,10 @@ struct CharacterSprite
           #include <Lp3/Engine/Gfx/Pixel.h>
      }
      ~block "h" {
+
+     // Using this anytime there appears to be some issues with precision.
+     typedef double VbInt;
+
      double x; //Integer
      double y; //Integer
      double lastX;
