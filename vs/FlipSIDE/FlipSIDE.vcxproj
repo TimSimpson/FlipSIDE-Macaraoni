@@ -69,20 +69,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\Main.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\AnimationFrame.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\CharacterSprite.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\CinemaType.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\Dependencies.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\Game.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\README.rst" />
-    <ClInclude Include="..\..\src\nnd32\Sound.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\Vb.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\Vertex.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\View.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\World.mcpp" />
-  </ItemGroup>
-  <ItemGroup>
     <ClInclude Include="..\..\target\Config_Lp3NND32.h" />
     <ClInclude Include="..\..\target\FlipSide.h" />
     <ClInclude Include="..\..\target\nnd32.h" />

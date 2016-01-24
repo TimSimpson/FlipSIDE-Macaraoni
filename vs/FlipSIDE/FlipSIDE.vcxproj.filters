@@ -51,22 +51,6 @@
     <ClInclude Include="..\..\target\nnd32\World.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Main.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\CharacterSprite.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\CinemaType.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\Dependencies.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\Game.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\README.rst" />
-    <ClInclude Include="..\..\src\nnd32\Sound.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\Vb.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\Vertex.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\World.mcpp" />
-    <ClInclude Include="..\..\src\nnd32\View.mcpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\nnd32\AnimationFrame.mcpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\target\FlipSide.cpp">
