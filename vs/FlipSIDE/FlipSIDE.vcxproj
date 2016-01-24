@@ -1,0 +1,115 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{7DE7D400-6670-499B-A262-F700006A2713}</ProjectGuid>
+    <RootNamespace>FlipSIDE</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v120</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <AdditionalIncludeDirectories>C:\Users\Tim\Macaroni\Libraries\Lp3\Lp3.Engine.Input\DEV\src;C:\Users\Tim\Macaroni\Libraries\Lp3\Lp3.Engine.Input\DEV\target;C:\Users\Tim\Macaroni\Libraries\Lp3\Lp3.Engine.Core\DEV\src;C:\Users\Tim\Macaroni\Libraries\Lp3\Lp3.Engine.Core\DEV\target;C:\Users\Tim\Macaroni\Libraries\Lp3\Lp3.Engine.Gfx\DEV\target;C:\Users\Tim\Macaroni\Libraries\Lp3\Lp3.Engine.Gfx\DEV\src;c:\Tools\Local\boost\boost_1_58_0;C:\Work\github\TimSimpson\Lp3\Code\FlipSIDE\target;C:\Work\github\TimSimpson\Lp3\Code\FlipSIDE\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>BOOST_ALL_DYN_LINK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalLibraryDirectories>C:\Work\github\TimSimpson\Lp3\Code\FlipSIDE\target\exe;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>Lp3_Core.lib;Lp3Gfx.lib;Lp3Input.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <TargetMachine>MachineX86</TargetMachine>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+    </ClCompile>
+    <Link>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\Main.mcpp" />
+    <ClInclude Include="..\..\src\nnd32\AnimationFrame.mcpp" />
+    <ClInclude Include="..\..\src\nnd32\CharacterSprite.mcpp" />
+    <ClInclude Include="..\..\src\nnd32\CinemaType.mcpp" />
+    <ClInclude Include="..\..\src\nnd32\Dependencies.mcpp" />
+    <ClInclude Include="..\..\src\nnd32\Game.mcpp" />
+    <ClInclude Include="..\..\src\nnd32\README.rst" />
+    <ClInclude Include="..\..\src\nnd32\Sound.mcpp" />
+    <ClInclude Include="..\..\src\nnd32\Vb.mcpp" />
+    <ClInclude Include="..\..\src\nnd32\Vertex.mcpp" />
+    <ClInclude Include="..\..\src\nnd32\View.mcpp" />
+    <ClInclude Include="..\..\src\nnd32\World.mcpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\target\Config_Lp3NND32.h" />
+    <ClInclude Include="..\..\target\FlipSide.h" />
+    <ClInclude Include="..\..\target\nnd32.h" />
+    <ClInclude Include="..\..\target\nnd32\AnimationFrame.h" />
+    <ClInclude Include="..\..\target\nnd32\CharacterSprite.h" />
+    <ClInclude Include="..\..\target\nnd32\CinemaType.h" />
+    <ClInclude Include="..\..\target\nnd32\Game.h" />
+    <ClInclude Include="..\..\target\nnd32\Sound.h" />
+    <ClInclude Include="..\..\target\nnd32\Vb.h" />
+    <ClInclude Include="..\..\target\nnd32\Vertex.h" />
+    <ClInclude Include="..\..\target\nnd32\View.h" />
+    <ClInclude Include="..\..\target\nnd32\World.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\target\FlipSide.cpp" />
+    <ClCompile Include="..\..\target\nnd32.cpp" />
+    <ClCompile Include="..\..\target\nnd32\AnimationFrame.cpp" />
+    <ClCompile Include="..\..\target\nnd32\CharacterSprite.cpp" />
+    <ClCompile Include="..\..\target\nnd32\CinemaType.cpp" />
+    <ClCompile Include="..\..\target\nnd32\Game.cpp" />
+    <ClCompile Include="..\..\target\nnd32\Sound.cpp" />
+    <ClCompile Include="..\..\target\nnd32\Vb.cpp" />
+    <ClCompile Include="..\..\target\nnd32\Vertex.cpp" />
+    <ClCompile Include="..\..\target\nnd32\View.cpp" />
+    <ClCompile Include="..\..\target\nnd32\World.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
