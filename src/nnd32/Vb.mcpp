@@ -101,6 +101,17 @@ class VbFile
         }
     }
 
+    void setArg(std::stringstream & ss, bool & arg)
+    {
+        string text;
+        ss >> text;
+        if (text == "#TRUE#" || text != "0") {
+            arg = true;
+        } else {
+            arg = false;
+        }
+    }
+
     template<typename HeadType, typename... TailTypes>
     void setArguments(std::stringstream & ss, HeadType & head,
                       TailTypes & ... tail)

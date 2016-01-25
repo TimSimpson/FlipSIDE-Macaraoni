@@ -1679,41 +1679,47 @@ class Game
     }
 
     ~hidden void createPlayer(int who, const string & what) {
-        /*
-        Dim goatorg As Integer
-        With Sprite(who)
+        int goatorg = 0;
+        auto & ws = world.Sprite[who];
 
-        If playerName((who / 10)) = "Thomas" Then
-        weapon(who / 10) = "fireball"
-        Call loadAnimation(who, "thomas.ani")
-        Call loadTexture((who / 10) + 1, "flip1.bmp", 254, 254)
-        Sprite(who).texture = (who / 10) + 1
-        For goatorg = (who + 1) To (who + 9): Call loadAnimation(goatorg, "fireball.ani"): Next goatorg
-        End If
+        if (world.playerName[(who / 10)] == "Thomas") {
+            world.weapon[who / 10] = "fireball";
+            this->loadAnimation(who, "thomas.ani");
+            view.LoadTexture((who / 10) + 1, "flip1.bmp", 254, 254);
+            world.Sprite[who].texture = (who / 10) + 1;
+            for (goatorg = (who + 1); goatorg <= (who + 9); ++ goatorg) {
+                this->loadAnimation(goatorg, "fireball.ani");
+            }
+        }
 
-        If playerName((who / 10)) = "Nick" Then
-        weapon(who / 10) = "fireball"
-        Call loadAnimation(who, "nick.ani")
-        Call loadTexture((who / 10) + 1, "joel.bmp", 254, 258)
-        Sprite(who).texture = (who / 10) + 1
-        For goatorg = (who + 1) To (who + 9): Call loadAnimation(goatorg, "icespike.ani"): Next goatorg
-        End If
+        if (world.playerName[(who / 10)] == "Nick") {
+            world.weapon[who / 10] = "fireball";
+            this->loadAnimation(who, "nick.ani");
+            view.LoadTexture((who / 10) + 1, "joel.bmp", 254, 258);
+            world.Sprite[who].texture = (who / 10) + 1;
+            for (goatorg = (who + 1); goatorg <= (who + 9); ++goatorg) {
+                this->loadAnimation(goatorg, "icespike.ani");
+            }
+        }
 
+        if (world.playerName[(who / 10)] == "Nicky") {
+            world.weapon[who / 10] = "bomb";
+            this->loadAnimation(who, "nicky.ani");
+            view.LoadTexture((who / 10) + 1, "LilNicky.bmp", 84, 148);
+            world.Sprite[who].texture = (who / 10) + 1;
+            for (goatorg = (who + 1); goatorg <= (who + 9); ++goatorg) {
+                this->loadAnimation(goatorg, "bomb.ani");
+            }
+        }
 
-        If playerName((who / 10)) = "Nicky" Then
-        weapon(who / 10) = "bomb"
-        loadAnimation who, "nicky.ani"
-        Call loadTexture((who / 10) + 1, "LilNicky.bmp", 84, 148)
-        Sprite(who).texture = (who / 10) + 1
-        For goatorg = (who + 1) To (who + 9): Call loadAnimation(goatorg, "bomb.ani"): Next goatorg
-        End If
-        End With
+        for (goatorg = (who + 1); goatorg <= (who + 9); ++ goatorg) {
+            world.Sprite[goatorg].name = "";
+            world.Sprite[goatorg].zOrder = -90;
+        }
+        //Sprite(who).name = what//playerName(who / 10)
+        //Sprite(who).frame = 1
+        //Call initSprites(who)
 
-        For goatorg = (who + 1) To (who + 9): Sprite(goatorg).name = "": Sprite(goatorg).zOrder = -90: Next goatorg
-        'Sprite(who).name = what'playerName(who / 10)
-        'Sprite(who).frame = 1
-        'Call initSprites(who)
-        */
     }
 
     ~hidden void debugLevel() {
@@ -2499,7 +2505,7 @@ class Game
             spr.soundFile = "Kerbose Ouch";
             spr.jumpStrength = 25;
             trueorg = (int) (vb.Rnd() * 2.0 + 1);
-            if (trueorg = 1) {
+            if (trueorg == 1) {
                 this->loadAnimation(which, "kerbose.ani");
             } else {
                 this->loadAnimation(which, "putulo.ani");
@@ -3137,7 +3143,6 @@ class Game
     }
 
     public void TimedEvents() {
-        LP3_LOG_DEBUG("MARIO is doing some timed events!")
         //Rem- Sub for the laid back peacefully timed things, like animation
         //Rem- ANIMATION!
         for (int j = 0; j <= world.spritesInUse; ++ j) {

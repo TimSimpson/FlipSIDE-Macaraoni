@@ -80,9 +80,10 @@ class View : public ScreenObject
         if (bgtexture) {
             LP3_ASSERT_FALSE(!bgtexture);
             renderer.UseTexture(bgtexture);
-            drawVertsAsQuad(renderer, bgverts.data(), -1);
+            drawVertsAsQuad(renderer, bgverts.data(), -1, 0.0f);
         }
         int currentTexture = -1;
+        float z = 0.0f;
         for (int j = 0; j < world.spritesInUse; ++ j) {
             if (world.drawOrder[j] == -1) {
                 continue;   // goto suckIt
@@ -97,8 +98,9 @@ class View : public ScreenObject
                     currentTexture = sprite.texture;
                 }
                 // Shouldn't it not be in draw order otherwise? Oh well...
+                z += 0.0067;
                 drawVertsAsQuad(renderer, sprite.SpriteVerts.data(),
-                                sprite.texture);
+                                sprite.texture, z);
             }
         }
         // If ((GetTickCount / 1000) > cranBerry) Then cranBerry = ((GetTickCount / 1000) + 1): frRate = frRate2: frRate2 = 0
@@ -110,7 +112,7 @@ class View : public ScreenObject
     }
 
     ~hidden void drawVertsAsQuad(Renderer & renderer, const Vertex * v,
-                                 const int texIndex)
+                                 const int texIndex, float z)
     {
         // The verts in the old engine where rendered like an N starting from
         // the bottom left corner.
@@ -135,7 +137,7 @@ class View : public ScreenObject
         // assumed here about what data is actually useful.
         renderer.TexturedQuad(
             {{tl.x, tl.y}, {br.x, br.y}},
-            tl.z, // Could probably be any vertex in the array.
+            z,
             src);
 
     }

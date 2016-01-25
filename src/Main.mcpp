@@ -103,7 +103,7 @@ public:
         //world.clock = world.clock + (120.0 * Clock::GetSpeedMod());
         world.clock = world.clock + Clock::GetSpeedMod();
         // I am also presumming that sFactor was 2, based on the code:
-        world.sFactor = Clock::GetSpeedMod() * 2.0;
+        world.sFactor = Clock::GetSpeedMod() * 120.0;
         if (world.LemonTime) {
             world.sFactor *= 2;
         }
