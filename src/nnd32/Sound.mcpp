@@ -10,7 +10,7 @@ class Sound
     public void LoadSound(int which, const string & soundFile,
                           string soundName = "")
     {
-        LP3_LOG_DEBUG("LoadSound", soundFile);
+        LP3_LOG_DEBUG("LoadSound %s", soundFile);
     }
 
     public void PlayBgm(const string & soundFile)

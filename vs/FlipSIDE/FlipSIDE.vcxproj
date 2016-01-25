@@ -78,6 +78,7 @@
     <ClInclude Include="..\..\target\nnd32\Game.h" />
     <ClInclude Include="..\..\target\nnd32\Sound.h" />
     <ClInclude Include="..\..\target\nnd32\Vb.h" />
+    <ClInclude Include="..\..\target\nnd32\VbFile.h" />
     <ClInclude Include="..\..\target\nnd32\Vertex.h" />
     <ClInclude Include="..\..\target\nnd32\View.h" />
     <ClInclude Include="..\..\target\nnd32\World.h" />
@@ -91,6 +92,7 @@
     <ClCompile Include="..\..\target\nnd32\Game.cpp" />
     <ClCompile Include="..\..\target\nnd32\Sound.cpp" />
     <ClCompile Include="..\..\target\nnd32\Vb.cpp" />
+    <ClCompile Include="..\..\target\nnd32\VbFile.cpp" />
     <ClCompile Include="..\..\target\nnd32\Vertex.cpp" />
     <ClCompile Include="..\..\target\nnd32\View.cpp" />
     <ClCompile Include="..\..\target\nnd32\World.cpp" />

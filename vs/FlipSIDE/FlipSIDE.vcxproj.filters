@@ -51,6 +51,9 @@
     <ClInclude Include="..\..\target\nnd32\World.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\target\nnd32\VbFile.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\target\FlipSide.cpp">
@@ -85,6 +88,9 @@
     </ClCompile>
     <ClCompile Include="..\..\target\nnd32\World.cpp">
       <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\target\nnd32\VbFile.cpp">
+      <Filter>Header Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
