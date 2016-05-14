@@ -1,3 +1,5 @@
+~extern std::array include=<array> ;
+
 class boost_algorithm_string_predicate { ~hfile=<boost/algorithm/string/predicate.hpp> };
 class boost_lexical_cast { ~hfile=<boost/lexical_cast.hpp> };
 

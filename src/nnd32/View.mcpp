@@ -1,3 +1,4 @@
+~import-h std::array;
 ~import boost::format;
 ~import LP3_LOG_DEBUG;
 ~import Lp3::Engine::Gfx::BitmapReader;
@@ -17,7 +18,7 @@
 ~import Lp3::Engine::Gfx::Texture;
 ~import Lp3::Engine::Gfx::TexturePtr;
 ~import Lp3::Engine::Gfx::Geometry::TexturedQuadSrc;
-~import nnd32::Vertex;
+~import-h nnd32::Vertex;
 ~import nnd32::World;
 
 ~namespace nnd32;
@@ -29,10 +30,6 @@ class View : public ScreenObject
     private ImageMemory & memory;
     private TexturePtr bgtexture;
 
-    ~block "h-predef" {
-        #include <array>
-        #include "Vertex.h"
-    }
     ~block "h" {
         std::array<Lp3::Engine::Gfx::TexturePtr, 10> AnimationTexture;
     }

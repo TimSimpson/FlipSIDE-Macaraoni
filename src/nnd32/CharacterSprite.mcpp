@@ -1,19 +1,14 @@
-~import std::array;
-~import nnd32::AnimationFrame;
-~import std::std::string;
-~import nnd32::Vertex;
+~import-h std::array;
+~import-h nnd32::AnimationFrame;
+~import-h Lp3::Engine::Gfx::Pixel;
+~import std::string;
+~import-h nnd32::Vertex;
 
 ~namespace nnd32;
 
 
 struct CharacterSprite
 {
-     ~block "h-predef" {
-          #include <array>
-          #include "AnimationFrame.h"
-          #include "Vertex.h"
-          #include <Lp3/Engine/Gfx/Pixel.h>
-     }
      ~block "h" {
 
      // Using this anytime there appears to be some issues with precision.

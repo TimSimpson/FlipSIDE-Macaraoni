@@ -1,17 +1,13 @@
-~import std::algorithm;
+~import-h std::array;
 ~import std::array;
-~import nnd32::CharacterSprite;
+~import-h nnd32::CharacterSprite;
+~import-h nnd32::CinemaType;
 ~import std::string;
 
 ~namespace nnd32;
 
 struct World
 {
-    ~block "h-predef" {
-        #include <array>
-        #include "CharacterSprite.h"
-        #include "CinemaType.h"
-    }
     ~block "h" {
 
     // Using this anytime there appears to be some issues with precision.
