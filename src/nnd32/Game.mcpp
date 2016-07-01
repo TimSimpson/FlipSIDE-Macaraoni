@@ -120,6 +120,8 @@ class Game
         //6 Players 1 and 3
         //7 Players 2 and 3
 
+        #pragma warning(disable: 4244)
+
         //Three Player Scrolling is kind of tricky...
         if (world.gotFocus == -3) {
             if (world.Sprite[0].x < world.Sprite[10].x
@@ -2210,14 +2212,17 @@ class Game
 
     ~hidden double getMiddleX(int who) {
         LP3_ASSERT_TRUE(false); // TODO
+        return 0;
     }
 
     ~hidden double getMiddleY(int who) {
         LP3_ASSERT_TRUE(false); // TODO
+        return 0;
     }
 
     ~hidden double getProx(int who, int who2) {
         LP3_ASSERT_TRUE(false); // TODO
+        return 0;
     }
 
     ~hidden void goToLevel(const double which) {
@@ -3290,6 +3295,7 @@ class Game
 
     ~hidden int pickTarget(int who, int koo) {
         LP3_ASSERT_TRUE(false); // TODO
+        return 0;
     }
 
     ~hidden void printframes(int who) {

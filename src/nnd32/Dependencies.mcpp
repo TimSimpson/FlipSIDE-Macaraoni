@@ -1,7 +1,23 @@
 ~extern std::array include=<array> ;
 
+
+
 class boost_algorithm_string_predicate { ~hfile=<boost/algorithm/string/predicate.hpp> };
 class boost_lexical_cast { ~hfile=<boost/lexical_cast.hpp> };
+namespace boost {
+    ~extern format
+        include=<boost/format.hpp>
+        using= { using boost::format; };
+    ~extern intrusive_ptr
+        include=<boost/intrusive_ptr.hpp>
+        using= { using boost::intrusive_ptr; };
+    ~extern optional
+        include=<boost/optional.hpp>
+        using= { using boost::optional; };
+    ~extern shared_ptr
+        include=<boost/shared_ptr.hpp>
+        using= { using boost::shared_ptr; };
+}
 
 class std::mt19937 { ~hfile=<random> };
 class std::random_device { ~hfile=<random> };

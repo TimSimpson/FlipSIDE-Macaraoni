@@ -1,18 +1,24 @@
 local Path = require "Macaroni.IO.Path"
+local cmfw = require "Macaroni.Generators.CMake.CMakeFileWriter"
 
-import("Lp3", "Lp3Project", "DEV")
-require "Lp3Project"
 
-Lp3Project{
-  group="Lp3",
-  project="NND32",
-  version="DEV",
-  src="src",
-  target="target",
-  libShortName="Lp3NND32",
-  dependencies = {
-    load("Lp3", "Lp3.Engine.Core", "DEV"):Target("lib"),
-    load("Lp3", "Lp3.Engine.Gfx", "DEV"):Target("lib"),
-    load("Lp3", "Lp3.Engine.Input", "DEV"):Target("lib"),
-  },
-};
+project = context:Group("Lp3"):Project("NND32"):Version("DEV")
+
+lp3Nnd32 = project:Library{
+    name="Lp3NND32",
+    shortName="Lp3NND32",
+    headers=pathList{"src", "target"},
+    sources=pathList{"src", "build/macaroni"},
+    usesBoost=true,
+}
+
+function generate()
+  local cpp = plugins:Get("Cpp")
+  cpp:Run("Generate",
+          { projectVersion=project, path=filePath("target"), output=output})
+
+  local root = Path.New(getWorkingDirectory());
+  cmfw.ProjectInfo(
+      project,
+      root:NewPathForceSlash("target/macaroni.cmake"))
+end

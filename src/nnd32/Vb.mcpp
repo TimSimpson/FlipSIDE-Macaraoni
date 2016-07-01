@@ -57,6 +57,8 @@ class VbFile
         }
     }
 
+    public VbFile(VbFile && other) = default;
+
     public ~VbFile()
     {
         LP3_LOG_DEBUG("Closing file %s...", fullPath);

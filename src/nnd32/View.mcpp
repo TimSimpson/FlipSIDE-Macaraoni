@@ -125,9 +125,13 @@ class View : public ScreenObject
         // floating point values of tu, tv, but the new engine does that
         // for us... which means we have to UNDO those calculations.
         TexturedQuadSrc src = {
-            { tl.tu * textureWidth, tl.tv * textureHeight },
-            { br.tu * textureWidth, br.tv * textureHeight }
+            { static_cast<int>(tl.tu * textureWidth),
+                static_cast<int>(tl.tv * textureHeight) },
+            { static_cast<int>(br.tu * textureWidth),
+                static_cast<int>(br.tv * textureHeight) }
+
         };
+
 
         // Arrays of vertices were used to represent two triangles, but
         // really I always used them for quads. So certain things can be
@@ -337,7 +341,7 @@ class View : public ScreenObject
             {
                 auto & v = sprite.SpriteVerts[1];
                 v.x = sprite.x - world.CameraX;
-                v.y = sprite.y - (sprite.z) - world.CameraY;
+                v.y  = sprite.y - (sprite.z) - world.CameraY;
                 if (sprite.srcx != 0) {
                     v.tu = (float) sprite.srcx / this->texWidth(sprite.texture);
                 }
