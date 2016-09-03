@@ -1,16 +1,41 @@
 ~import boost::format;
 ~import LP3_LOG_DEBUG;
 ~import std::string;
+~import std::vector;
 
 
 ~namespace nnd32;
 
+class WaveSound
+{
+    private ResettableReadStreamPtr stream;
+    private WaveFile file;
+    private WaveFileSource wfs;
+
+    public WaveSound(path)
+    :   stream(InputFileStream::Create(path)),
+        file(stream),
+        wfs(*(GlobalHeap::GetGlobalHeap()),
+            &file,
+            4 * 80 * 1024,
+            (80 * 1024) / 4)
+    {}
+};
+
 class Sound
 {
+    private vector<WaveSound *> waves;
+
+    public Sound()
+    :   waves()
+    {
+        waves.reserve(30);
+    }
+
     public void LoadSound(int which, const string & soundFile,
                           string soundName = "")
     {
-        LP3_LOG_DEBUG("LoadSound %s", soundFile);
+        waves[which] = new WaveSound(soundFile);;
     }
 
     public void PlayBgm(const string & soundFile)

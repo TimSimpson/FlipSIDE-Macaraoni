@@ -6,12 +6,15 @@
 ~import Lp3::Engine::Input::Controls;
 ~import nnd32::Game;
 ~import Lp3::Engine::Gfx::GfxManager;
+~import Lp3::Engine::Gfx::Geometry::Size2d;
 ~import nnd32::Sound;
 ~import std::string;
+~import Lp3::Engine::Input::ToolControls;
 ~import nnd32::Vb;
 ~import nnd32::View;
 ~import nnd32::World;
 ~import std::vector;
+~import Lp3::Engine::Gfx::Windows_h;
 
 ~block "cpp" :=
 
@@ -28,6 +31,8 @@ struct Run{
     }
 
 };
+
+const Size2d<unsigned int> virtualResolution{640, 480};
 
 class Main
 {
@@ -49,11 +54,14 @@ private:
     double currentTimerTime;
     double nextTimerCallTime;
 
+    ToolControls toolControls;
+    bool isFullScreen;
+
 public:
     Main(const vector<string> & arguments
          LP3_COMPILE_TARGET_WINDOWS_THEN(, HINSTANCE hInstance, HWND hWnd))
     :   r1([](){ LP3_LOG_DEBUG("Initializing GFX manager."); }),
-        manager(LP3_COMPILE_TARGET_WINDOWS_THEN(hWnd)),
+        manager(LP3_COMPILE_TARGET_WINDOWS_THEN(hWnd,) virtualResolution),
         r2([](){ LP3_LOG_DEBUG("Initializing controls."); }),
         controls(
             #ifdef COMPILE_TARGET_WINDOWS
@@ -70,10 +78,14 @@ public:
         vb(),
         game(controls, view, sound, vb, world),
         currentTimerTime(0),
-        nextTimerCallTime(1.0/5.0)
+        nextTimerCallTime(1.0/5.0),
+        toolControls(virtualResolution),
+        isFullScreen(false)
     {
         LP3_LOG_DEBUG("Starting Clock...");
         Clock::Init(1000.0f / 30.0f);
+
+        ChangeToBorderedWindowed(hWnd);
     }
 
     ~Main()
@@ -143,6 +155,17 @@ public:
         void WindowsMessage(HWND hWnd, UINT message, WPARAM wParam,
                             LPARAM lParam)
         {
+            toolControls.WindowsMessage(hWnd, message, wParam, lParam);
+            if (toolControls.GetKeyDownWithCancel('F'))
+            {
+                if (isFullScreen) {
+                    ChangeToBorderedWindowed(hWnd);
+                } else {
+                    ChangeToBorderlessFullScreenWindow(hWnd);
+                }
+                isFullScreen = !isFullScreen;
+            }
+
             switch(message){
                 case WM_SIZE:
                     manager.Resize({ LOWORD(lParam), HIWORD(lParam) });

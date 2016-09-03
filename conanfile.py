@@ -6,7 +6,7 @@ class Nnd32Conan(ConanFile):
     name = "Nnd32"
     version = "0.0.4.0"
     requires = ("Boost/1.60.0@lasote/stable",
-                "Lp3-Engine/0.0.4.0@TimSimpson/testing")
+                "Lp3-Engine/0.4.1.0@TimSimpson/testing")
     settings = "os", "compiler", "build_type", "arch"
     generators = "cmake"
 

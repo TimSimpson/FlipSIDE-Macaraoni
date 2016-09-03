@@ -1,7 +1,3 @@
-~extern std::array include=<array> ;
-
-
-
 class boost_algorithm_string_predicate { ~hfile=<boost/algorithm/string/predicate.hpp> };
 class boost_lexical_cast { ~hfile=<boost/lexical_cast.hpp> };
 namespace boost {
@@ -22,3 +18,9 @@ namespace boost {
 class std::mt19937 { ~hfile=<random> };
 class std::random_device { ~hfile=<random> };
 class std::uniform_real_distribution { ~hfile=<random> };
+
+
+~extern Lp3::Engine::Gfx::Windows_h
+    export
+    include=<Lp3/Engine/Gfx/Windows.h>
+    using={ using namespace Lp3::Engine::Gfx::Windows; };
